@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  app:
+    image: bellsoft/liberica-openjdk-debian:20
+    container_name: app
+    restart: always
+    working_dir: /app/
+    command: ./gradlew bootRun
+    tty: true
+    volumes:
+      - ./app/nighthawk:/app
+    ports:
+      - 8080:8080
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./db:/home
+      - ./db/db.sql:/docker-entrypoint-initdb.d/db.sql
+    ports:
+      - '5432:5432'
